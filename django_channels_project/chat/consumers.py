@@ -10,6 +10,17 @@ from .models import Thread, ChatMessage
 class ChatConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
         print("connected", event)
+        await self.send({
+            "type": "websocket.accept"
+        })
+        other_user = self.scope['url_route']['kwargs']['username']
+        me = self.scope['user']
+        print(other_user, me)
+        #await asyncio.sleep(10)
+        await self.send({
+            "type": "websocket.send",
+            "text": "Hello World!!"
+        })
 
     async def websocket_receive(self, event):
         print("receive", event)
